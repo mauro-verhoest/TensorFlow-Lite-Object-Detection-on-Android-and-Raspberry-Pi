@@ -234,7 +234,7 @@ while True:
 #                mv.move_left()
 #            if center_coord(xmin, xmax) < 1280/2:
 #                mv.move_right()
-#            if center_coord(ymin, ymax) > 720 / 2:
+#            if center_coord(ymin, ymax) > 720/2:
 #                mv.move_down()
 #            if center_coord(ymin, ymax) < 720/2:
 #                mv.move_up()
