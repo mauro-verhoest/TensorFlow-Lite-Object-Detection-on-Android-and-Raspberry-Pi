@@ -234,16 +234,12 @@ while True:
             # label text 
 
             if center_coord(xmin, xmax) > 1280/2:
-                print('right')
                 print(mv.move_horizontal(center_coord(xmin, xmax)))
             if center_coord(xmin, xmax) < 1280/2:
-                print('left')
                 print(mv.move_horizontal(center_coord(xmin, xmax)))
             if center_coord(ymin, ymax) > 720/2:
-                print('down')
                 print(mv.move_vertical(center_coord(ymin, ymax)))
             if center_coord(ymin, ymax) < 720/2:
-                print('up')
                 print(mv.move_vertical(center_coord(ymin, ymax)))
 
     # Draw framerate in corner of frame
