@@ -165,6 +165,7 @@ freq = cv2.getTickFrequency()
 
 # Initialize video stream
 videostream = VideoStream(resolution=(imW, imH), framerate=30).start()
+current_tracking = input("What do you want to track? ")
 time.sleep(1)
 
 
@@ -173,8 +174,11 @@ def center_coord(min_coord, max_coord):
     return int(round((min_coord+max_coord)/2))
 
 
+<<<<<<< Updated upstream
 current_tracking = 'person'
 mv = Movement(1.5, 60, 0.001)
+=======
+>>>>>>> Stashed changes
 # for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
 while True:
 
@@ -204,11 +208,13 @@ while True:
     scores = interpreter.get_tensor(output_details[2]['index'])[0]  # Confidence of detected objects
     # num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and
     # not needed)
-
+    amount_of_objects = range(len(scores))
+    current_object = 1
     # Loop over all detections and draw detection box if confidence is above minimum threshold
-    for object in range(len(scores)):
+    for object in amount_of_objects:
         if (scores[object] > min_conf_threshold) and (scores[object] <= 1.0) \
-                and labels[int(classes[object])] == current_tracking:
+                and labels[int(classes[object])] == current_tracking and current_object == 1:
+            
             # Get bounding box coordinates and draw box Interpreter can return coordinates that are outside of image
             # dimensions, need to force them to be within image using max() and min()
             ymin = int(max(1, (boxes[object][0] * imH)))
@@ -217,10 +223,11 @@ while True:
             xmax = int(min(imW, (boxes[object][3] * imW)))
 
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
-            cv2.drawMarker(frame, (center_coord(xmin, xmax), center_coord(ymin, ymax)), (10, 255, 0))
+            cv2.drawMarker(frame, (center_coord(xmin, xmax), center_coord(ymin, ymax)), (10, 10, 255))
 
             # Draw label
-            object_name = current_tracking  # Look up object name from "labels" array using class index
+            object_name = current_tracking + ' ' + str(current_object) # Look up object name from "labels" array using class index
+            current_object += 1
             label = '%s: %d%%' % (object_name, int(scores[object] * 100))  # Example: 'person: 72%'
             labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
             label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
@@ -231,6 +238,7 @@ while True:
             # label text 
 
             if center_coord(xmin, xmax) > 1280/2:
+<<<<<<< Updated upstream
                 mv.move_left()
             if center_coord(xmin, xmax) < 1280/2:
                 mv.move_right()
@@ -238,6 +246,15 @@ while True:
                 mv.move_down()
             if center_coord(ymin, ymax) < 720/2:
                 mv.move_up()
+=======
+                print('right')
+            if center_coord(xmin, xmax) < 1280/2:
+                print('left')
+            if center_coord(ymin, ymax) > 720/2:
+                print('down')
+            if center_coord(ymin, ymax) < 720/2:
+                print('up')
+>>>>>>> Stashed changes
 
     # Draw framerate in corner of frame
     cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
