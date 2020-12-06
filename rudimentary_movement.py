@@ -13,7 +13,7 @@ class Movement:
         rotate_pixels = -(xcoord - self.res[0]/2)
         pixels_per_degree = self.res[0] / self.h_angle
         rotate = round(rotate_pixels / pixels_per_degree)
-        if rotate < 0:
+        if xcoord < self.res[0]/2:
             self._direction = '+'
             rotate = -rotate
         if rotate <= self.play:
@@ -29,7 +29,7 @@ class Movement:
         tilt_pixels = -(ycoord - self.res[1] / 2)
         pixels_per_degree = self.res[1] / self.v_angle
         tilt = round(tilt_pixels / pixels_per_degree)
-        if tilt < 0:
+        if ycoord < self.res[1] / 2:
             self._direction = '+'
             tilt = -tilt
         if tilt <= self.play:
