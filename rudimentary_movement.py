@@ -1,7 +1,7 @@
 class Movement:
     """Allows the stepper motor to move"""
 
-    def __init__(self, factor=1, fov_angle_horizontal=62, fov_angle_vertical=37, resolution=(1280, 720), play=2):
+    def __init__(self, factor=1, fov_angle_horizontal=62, fov_angle_vertical=37, resolution=(1280, 720), play=1):
         self.factor = factor
         self.h_angle = fov_angle_horizontal
         self.v_angle = fov_angle_vertical
