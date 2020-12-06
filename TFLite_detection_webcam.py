@@ -165,8 +165,9 @@ freq = cv2.getTickFrequency()
 
 # Initialize video stream
 videostream = VideoStream(resolution=(imW, imH), framerate=30).start()
+mv = Movement()
 current_tracking = input("What do you want to track? ")
-time.sleep(1)
+time.sleep(0.5)
 
 
 # Calculate the center coordinate for each object
@@ -174,11 +175,6 @@ def center_coord(min_coord, max_coord):
     return int(round((min_coord+max_coord)/2))
 
 
-<<<<<<< Updated upstream
-current_tracking = 'person'
-mv = Movement(1.5, 60, 0.001)
-=======
->>>>>>> Stashed changes
 # for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
 while True:
 
@@ -221,9 +217,10 @@ while True:
             xmin = int(max(1, (boxes[object][1] * imW)))
             ymax = int(min(imH, (boxes[object][2] * imH)))
             xmax = int(min(imW, (boxes[object][3] * imW)))
-
+            x = (center_coord(xmin, xmax)
+            y = (center_coord(ymin, ymax)
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
-            cv2.drawMarker(frame, (center_coord(xmin, xmax), center_coord(ymin, ymax)), (10, 10, 255))
+            cv2.drawMarker(frame, x, y, (10, 10, 255))
 
             # Draw label
             object_name = current_tracking + ' ' + str(current_object) # Look up object name from "labels" array using class index
@@ -238,23 +235,17 @@ while True:
             # label text 
 
             if center_coord(xmin, xmax) > 1280/2:
-<<<<<<< Updated upstream
-                mv.move_left()
-            if center_coord(xmin, xmax) < 1280/2:
-                mv.move_right()
-            if center_coord(ymin, ymax) > 720/2:
-                mv.move_down()
-            if center_coord(ymin, ymax) < 720/2:
-                mv.move_up()
-=======
                 print('right')
+                print(mv.move_horizontal(x))
             if center_coord(xmin, xmax) < 1280/2:
                 print('left')
+                print(mv.move_horizontal(x))
             if center_coord(ymin, ymax) > 720/2:
                 print('down')
+                print(mv.move_vertical(y))
             if center_coord(ymin, ymax) < 720/2:
                 print('up')
->>>>>>> Stashed changes
+                print(mv.move_vertical(y))
 
     # Draw framerate in corner of frame
     cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
