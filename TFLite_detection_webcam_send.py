@@ -237,11 +237,11 @@ while True:
 
             if center_coord(xmin, xmax) > 1280/2:
                 communication.write(mv.move_horizontal(center_coord(xmin, xmax)))
-            if center_coord(xmin, xmax) < 1280/2:
+            else:
                 communication.write(mv.move_horizontal(center_coord(xmin, xmax)))
             if center_coord(ymin, ymax) > 720/2:
                 communication.write(mv.move_vertical(center_coord(ymin, ymax)))
-            if center_coord(ymin, ymax) < 720/2:
+            else:
                 communication.write(mv.move_vertical(center_coord(ymin, ymax)))
 
     # Draw framerate in corner of frame
