@@ -22,7 +22,7 @@ import sys
 import time
 from threading import Thread
 import importlib.util
-from movement import Movement
+from rudimentary_movement import Movement
 
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread Source - Adrian
