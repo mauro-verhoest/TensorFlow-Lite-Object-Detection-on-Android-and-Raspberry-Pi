@@ -7,14 +7,15 @@ class Movement:
         self.v_angle = fov_angle_vertical
         self.res = resolution
         self.play = play
-        self._direction = '-'
+        self.direction = '-'
 
     def move_horizontal(self, xcoord):
+        self.direction = '-'
         rotate_pixels = -(xcoord - self.res[0]/2)
         pixels_per_degree = self.res[0] / self.h_angle
         rotate = round(rotate_pixels / pixels_per_degree)
-        if xcoord < self.res[0]/2:
-            self._direction = '+'
+        if rotate < 0:
+            self.direction = '+'
             rotate = -rotate
         if rotate <= self.play:
             return None
@@ -23,14 +24,15 @@ class Movement:
         rpm = self.factor * rotate
         while len(str(rpm)) <= 3:
             rpm = '0' + str(rpm)
-        return 't:00r:' + str(rotate) + 's:' + str(rpm) + 'td:0rd:' + self._direction
+        return 't:00r:' + str(rotate) + 's:' + str(rpm) + 'td:0rd:' + self.direction
 
     def move_vertical(self, ycoord):
+        self.direction = '-'
         tilt_pixels = -(ycoord - self.res[1] / 2)
         pixels_per_degree = self.res[1] / self.v_angle
         tilt = round(tilt_pixels / pixels_per_degree)
-        if ycoord < self.res[1] / 2:
-            self._direction = '+'
+        if tilt < 0:
+            self.direction = '+'
             tilt = -tilt
         if tilt <= self.play:
             return None
@@ -39,4 +41,4 @@ class Movement:
         rpm = self.factor * tilt
         while len(str(rpm)) <= 3:
             rpm = '0' + str(rpm)
-        return 't:' + str(tilt) + 'r:00s:' + str(rpm) + 'td:' + self._direction + 'rd:0'
+        return 't:' + str(tilt) + 'r:00s:' + str(rpm) + 'td:' + self.direction + 'rd:0'
