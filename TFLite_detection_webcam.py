@@ -22,7 +22,7 @@ import sys
 import time
 from threading import Thread
 import importlib.util
-import movement as mv
+from movement import Movement
 
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread Source - Adrian
@@ -174,7 +174,7 @@ def center_coord(min_coord, max_coord):
 
 
 current_tracking = 'person'
-
+mv = Movement(1.5, 60, 0.001)
 # for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
 while True:
 
@@ -230,14 +230,14 @@ while True:
             cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)  # Draw 
             # label text 
 
-#            if center_coord(xmin, xmax) > 1280/2:
-#                mv.move_left()
-#            if center_coord(xmin, xmax) < 1280/2:
-#                mv.move_right()
-#            if center_coord(ymin, ymax) > 720/2:
-#                mv.move_down()
-#            if center_coord(ymin, ymax) < 720/2:
-#                mv.move_up()
+            if center_coord(xmin, xmax) > 1280/2:
+                mv.move_left()
+            if center_coord(xmin, xmax) < 1280/2:
+                mv.move_right()
+            if center_coord(ymin, ymax) > 720/2:
+                mv.move_down()
+            if center_coord(ymin, ymax) < 720/2:
+                mv.move_up()
 
     # Draw framerate in corner of frame
     cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
