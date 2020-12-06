@@ -219,7 +219,7 @@ while True:
             xmax = int(min(imW, (boxes[object][3] * imW)))
             
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
-            cv2.drawMarker(frame, center_coord(xmin, xmax), center_coord(ymin, ymax), (10, 10, 255))
+            # cv2.drawMarker(frame, center_coord(xmin, xmax), center_coord(ymin, ymax), (10, 10, 255))
 
             # Draw label
             object_name = current_tracking + ' ' + str(current_object)  # Look up object name from "labels" array using class index
