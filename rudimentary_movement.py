@@ -18,7 +18,7 @@ class Movement:
             self.direction = '+'
             rotate = -rotate
         if rotate <= self.play:
-            return None
+            return 't:00r:00s:0000td:0rd:0'
         if len(str(rotate)) <= 1:
             rotate = '0' + str(rotate)
         rpm = self.factor * rotate
@@ -35,7 +35,7 @@ class Movement:
             self.direction = '+'
             tilt = -tilt
         if tilt <= self.play:
-            return None
+            return 't:00r:00s:0000td:0rd:0'
         if len(str(tilt)) <= 1:
             tilt = '0' + str(tilt)
         rpm = self.factor * tilt

@@ -237,8 +237,8 @@ while True:
             cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)  # Draw 
             # label text 
 
-            sio.write(unicode(mv.move_horizontal(center_coord(xmin, xmax))))
-            sio.write(unicode(mv.move_vertical(center_coord(ymin, ymax))))
+            sio.write(mv.move_horizontal(center_coord(xmin, xmax)))
+            sio.write(mv.move_vertical(center_coord(ymin, ymax)))
 
     # Draw framerate in corner of frame
     cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
