@@ -50,8 +50,3 @@ class Movement:
         rpm = speed * 2 * math.pi / 60
         print(rpm)
         return 't:' + tilt + 'r:00000s:' + str(rpm[0])
-
-
-test = Movement(1.5, 60, 0.003, (1280, 720))
-
-print(test.move_horizontal(640, 360))
