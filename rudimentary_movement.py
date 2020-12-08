@@ -1,3 +1,7 @@
+# Author: Rembie01
+# Date: 8 dec 2020
+
+
 class Movement:
     """Allows the stepper motor to move"""
 

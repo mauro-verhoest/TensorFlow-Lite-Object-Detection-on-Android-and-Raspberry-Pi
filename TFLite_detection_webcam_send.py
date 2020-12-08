@@ -1,7 +1,9 @@
 # Webcam Object Detection Using Tensorflow-trained Classifier #
 #
 # Author: Evan Juras (cleanup by Rembie01)
-# Date: 10/27/19 (cleaned up 1/12/2020)
+# Date: 10/27/19 (cleaned up 1 dec 2020)
+# Author: Rembie01
+# Date: 8 dec 2020
 # Description: 
 # This program uses a TensorFlow Lite model to perform object detection on a live webcam
 # feed. It draws boxes and scores around the objects of interest in each frame from the
@@ -23,7 +25,7 @@ import time
 from threading import Thread
 import importlib.util
 from rudimentary_movement import Movement
-import serial
+from arduino_com import ArduinoCom
 import io
 
 
@@ -168,8 +170,8 @@ freq = cv2.getTickFrequency()
 # Initialize video stream
 videostream = VideoStream(resolution=(imW, imH), framerate=30).start()
 mv = Movement()
-communication = serial.Serial(port='/dev/ttyAMA0', baudrate=9600)
-sio = io.TextIOWrapper(io.BufferedRWPair(communication, communication))
+communication = ArduinoCom()
+communication.wait_for_arduino()
 current_tracking = input("What do you want to track? ")
 time.sleep(0.5)
 
@@ -237,8 +239,8 @@ while True:
             cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)  # Draw 
             # label text 
 
-            sio.write(mv.move_horizontal(center_coord(xmin, xmax)))
-            sio.write(mv.move_vertical(center_coord(ymin, ymax)))
+            communication.send(move_horizontal(center_coord(xmin, xmax)))
+            communication.send(mv.move_vertical(center_coord(ymin, ymax)))
 
     # Draw framerate in corner of frame
     cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
