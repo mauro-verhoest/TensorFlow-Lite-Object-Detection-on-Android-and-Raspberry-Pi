@@ -13,7 +13,7 @@ class ArduinoCom:
     def send_to_arduino(self, string):
         self.ser.write(string.encode('utf-8'))
 
-    def recover_from_arduino(self):
+    def receive_from_arduino(self):
         ck = ""
         x = "z"
         bytecount = -1
@@ -35,7 +35,7 @@ class ArduinoCom:
         while msg.find("Arduino is ready") == -1:
             while self.ser.inWaiting() == 0:
                 pass
-            msg = self.recover_from_arduino()
+            msg = self.receive_from_arduino()
             print(msg)
             print()
 
@@ -51,5 +51,5 @@ class ArduinoCom:
             while self.ser.inWaiting() == 0:
                 pass
 
-            received = self.recover_from_arduino()
-            print("Reply Received  " + received)
+            received = self.receive_from_arduino()
+            print("Reply Received -- " + received)
