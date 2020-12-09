@@ -31,8 +31,8 @@ class Movement:
         return '<' + str(tilt) + ',00,' + str(rpm) + '>'
 
     def move(self, xcoord, ycoord):
-        rotate_pixels = (xcoord - self.res[0] / 2)
-        tilt_pixels = (ycoord - self.res[1] / 2)
+        rotate_pixels = -(xcoord - self.res[0] / 2)
+        tilt_pixels = -(ycoord - self.res[1] / 2)
         rotate_pixels_per_degree = self.res[0] / self.h_angle
         tilt_pixels_per_degree = self.res[1] / self.v_angle
         rotate = round(rotate_pixels / rotate_pixels_per_degree)

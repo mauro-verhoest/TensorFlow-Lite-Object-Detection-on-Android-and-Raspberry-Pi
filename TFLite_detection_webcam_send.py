@@ -174,7 +174,6 @@ mv = Movement()
 communication = ArduinoCom()
 communication.wait_for_arduino()
 current_tracking = input("What do you want to track? ")
-time.sleep(0.5)
 
 
 # Calculate the center coordinate for each object
