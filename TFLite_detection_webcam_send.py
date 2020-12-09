@@ -27,6 +27,7 @@ import importlib.util
 from rudimentary_movement import Movement
 from arduino_com import ArduinoCom
 import io
+import serial
 
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread Source - Adrian
@@ -239,22 +240,12 @@ while True:
             cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)  # Draw 
             # label text 
 
-            sent = move_horizontal(center_coord(xmin, xmax))
+            sent = mv.move(center_coord(xmin, xmax),center_coord(ymin, ymax))
             communication.send_to_arduino(sent)
             print(sent)
-            while communication.inWaiting() == 0:
+            while communication.ser.inWaiting() == 0:
                 pass
-            received = self.receive_from_arduino()
-            print("Reply Received -- " + received)
-            if sent != received:
-                break
-
-            sent = move_vertical(center_coord(ymin, ymax))
-            communication.send_to_arduino(sent)
-            print(sent)
-            while communication.inWaiting() == 0:
-                pass
-            received = self.receive_from_arduino()
+            received = communication.receive_from_arduino()
             print("Reply Received -- " + received)
             if sent != received:
                 break
@@ -276,6 +267,6 @@ while True:
         break
 
 # Clean up
-communication.close()
+communication.ser.close()
 cv2.destroyAllWindows()
 videostream.stop()

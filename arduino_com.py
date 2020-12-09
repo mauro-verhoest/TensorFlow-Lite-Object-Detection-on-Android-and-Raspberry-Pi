@@ -5,8 +5,8 @@ import serial
 
 
 class ArduinoCom:
-    def __init__(self, port="COM3", baudrate=9600):
-        self.ser = serial.Serial(port, baudrate)
+    def __init__(self, port="/dev/ttyACM0", baudrate=9600):
+        self.ser = serial.Serial(port, baudrate, timeout=1)
         self._startmarker = 60
         self._endmarker = 62
 
@@ -18,7 +18,7 @@ class ArduinoCom:
         x = "z"
         bytecount = -1
 
-        while ord(x) != startMarker:
+        while ord(x) != self._startmarker:
             x = self.ser.read()
 
         while ord(x) != self._endmarker:
