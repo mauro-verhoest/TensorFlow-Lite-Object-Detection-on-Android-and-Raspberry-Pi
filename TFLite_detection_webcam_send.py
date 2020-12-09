@@ -243,17 +243,6 @@ while True:
             sent = mv.move(center_coord(xmin, xmax), center_coord(ymin, ymax))
             communication.send_to_arduino(sent)
             print("Sent to Arduino -- " + sent)
-            while communication.ser.inWaiting() == 0:
-                pass
-            receive = 'empty'
-            while communication.ser.inWaiting() != 0:
-                try:
-                    receive = communication.receive_from_arduino()
-                except TypeError:
-                    pass
-            print("Reply Received -- " + receive)
-            # if sent != received:
-                # break
 
     # Draw framerate in corner of frame
     cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2,
