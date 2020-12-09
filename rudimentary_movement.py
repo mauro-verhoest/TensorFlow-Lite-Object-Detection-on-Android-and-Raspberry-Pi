@@ -50,13 +50,4 @@ class Movement:
         return '<' + str(tilt) + ',' + str(rotate) + ',' + str(tilt_rpm) + ',' + str(rotate_rpm) + '>'
 
 
-mv = Movement()
-print(mv.move(640, 360))
-print(mv.move(640, 0))
-print(mv.move(640, 720))
-print(mv.move(0, 360))
-print(mv.move(1280, 360))
-print(mv.move(0, 0))
-print(mv.move(1280, 0))
-print(mv.move(1280, 720))
-print(mv.move(0, 720))
+
