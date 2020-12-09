@@ -243,10 +243,15 @@ while True:
             sent = mv.move(center_coord(xmin, xmax), center_coord(ymin, ymax))
             communication.send_to_arduino(sent)
             print("Sent to Arduino -- " + sent)
-            while communication.ser.inWaiting() == 0:
+            while ard.ser.inWaiting() == 0:
                 pass
-            received = communication.receive_from_arduino()
-            print("Reply Received -- " + received)
+            receive = 'empty'
+            while ard.ser.inWaiting() != 0:
+                try:
+                    receive = ard.receive_from_arduino()
+                except TypeError:
+                    pass
+            print("Reply Received -- " + receivee)
             # if sent != received:
                 # break
 

@@ -2,10 +2,11 @@
 # Date: 8 dec 2020
 # Source:https://forum.arduino.cc/index.php?topic=225329.msg1810764#msg1810764
 import serial
+import time
 
 
 class ArduinoCom:
-    def __init__(self, port="/dev/ttyACM0", baudrate=9600):
+    def __init__(self, port="/dev/ttyACM0", baudrate=115200):
         self.ser = serial.Serial(port, baudrate, timeout=1)
         self._startmarker = 60
         self._endmarker = 62
@@ -26,7 +27,6 @@ class ArduinoCom:
                 ck = ck + x.decode("utf-8")
                 bytecount += 1
             x = self.ser.read()
-        print(ck)
 
         return ck
 
@@ -37,7 +37,6 @@ class ArduinoCom:
                 pass
             msg = self.receive_from_arduino()
             print(msg)
-            print()
 
     def send(self, string):
         wait_for_reply = False
