@@ -106,6 +106,7 @@ void setup() {
 motortilt.enable();
 motorrotate.enable();
 
+
 	//setup Seriële monitor
 	Serial.begin(115200);
 
@@ -153,16 +154,7 @@ void getDataFromPC() {
             readInProgress = true;
         }
     }
-    /*
-    else {
-        //als er niets doorgeven wordt moet er niets worden bewogen 
-        //er wordt niets bewogen als alle hoeken nul zijn en het toerental ook nul is
-        tilt_hoek = 0;
-        rotate_hoek = 0;
-        toerental_tilt_org = 0;
-        toerental_rotate_org = 0;
-    }
-    */
+ 
 }
 // tilt_hoek,rotate_hoek en toerental worden uit de gegeven string gehaald
 void parseData() {
@@ -266,9 +258,7 @@ void loop() {
             delay(1000);
         }
         */
-        
-        //doorgeven rotate & tilt-hoek en toerental aan Rasberry-Pi
-        //replyToPC();
+
 
         //aansturing stepper tilt
         motortilt.move(tilt_steps);
@@ -287,7 +277,7 @@ void loop() {
         rotate_hoek = 0;
         toerental_tilt_org = 0;
         toerental_rotate_org = 0;
-        //toerental = 0;
+
         //setup stappen motor 
         motortilt.setRPM(toerental_tilt_org);
         motortilt.setMicrostep(1);
@@ -337,8 +327,7 @@ void loop() {
         }
         */
 
-        //doorgeven rotate & tilt-hoek en toerental aan Rasberry-Pi
-        //replyToPC();
+        
 
         //aansturing stepper rotate
         //gegeven string doorsturen
