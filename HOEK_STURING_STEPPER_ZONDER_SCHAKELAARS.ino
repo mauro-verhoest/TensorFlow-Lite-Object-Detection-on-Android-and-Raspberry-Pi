@@ -1,11 +1,14 @@
 //bron code communicatie arduino raspberry pi: https://forum.arduino.cc/index.php?topic=225329.msg1810764#msg1810764
-#include <AccelStepper.h>
-#include <Arduino.h>
+#include "AccelStepper.h"
+#include "MultiStepper.h"
+#include "Arduino.h"
+
 
 
 
 /*
-infrobron voor omzetten naar Accelstepper https://groups.google.com/forum/embed/#!topic/accelstepper/0m9t4tZQYWo
+steppers tegelijktijd laten bewegen https://www.airspayce.com/mikem/arduino/AccelStepper/MultiStepper_8pde-example.html
+
 */
 
 //instelling variabelen communicatie
@@ -45,51 +48,48 @@ float step_angle = 1.8;
 const int steps_motor= 200;
 const byte microsteps = 16;
 const int toerental_max = 4500;
-//deze waarden komen overeen met 1 toer per seconde 
+
+
 //tilt
-int rpm_tilt = 60;
+int rpm_tilt =2000;
 int sps_tilt=(rpm_tilt/60)*steps_motor;
-float versnelling_tilt= 30;
+float versnelling_tilt= 1000;
 float sps_versnelling_tilt=(versnelling_tilt/60)*steps_motor;
 
-//rotate 
-int rpm_rotate = 60;
+//rotate
+int rpm_rotate = 2000;
 int sps_rotate=(rpm_rotate/60)*steps_motor;
-float versnelling_rotate= 30;
+float versnelling_rotate= 1000;
 float sps_versnelling_rotate=(versnelling_rotate/60)*steps_motor;
 
-
+//voor multistepper 
+long positions[2];
 
 //Setup steppers
 AccelStepper  motortilt(AccelStepper::DRIVER, pin_step_tilt, pin_dir_tilt);
 AccelStepper motorrotate(AccelStepper::DRIVER, pin_step_rotate, pin_step_tilt );
 
-
-
-
+//multistepepr controler aanmaken
+MultiStepper stappen_motoren;
 void setup() {
 
     //aanzetten steppers
-    //zijn nu gewoon effe voorbeeld waarden 
+    //zijn nu gewoon effe voorbeeld waarden
     motortilt.setMaxSpeed(sps_tilt);
     motortilt.setAcceleration(sps_versnelling_tilt);
     motorrotate.setMaxSpeed(sps_rotate);
     motorrotate.setAcceleration(sps_versnelling_rotate);
 
-
-    
-
-
-
-    
-
+    //stappen motoren toevoegen aan multistepper controller 
+    stappen_motoren.addStepper(motortilt);
+    stappen_motoren.addStepper(motorrotate);
 
 
 	//setup Seriële monitor
 	Serial.begin(baudrate);
 
 
-    //Debug voor instelling steppers 
+    //Debug voor instelling steppers
     /*
     Serial.println(rpm_tilt);
     Serial.println(sps_tilt);
@@ -98,7 +98,7 @@ void setup() {
     Serial.println(sps_versnelling_rotate);
     */
 
-    // tell the PC we are ready
+    // tell the RPI we are ready
     Serial.println("<Arduino is ready>");
 }
 
@@ -196,8 +196,7 @@ void loop() {
 
     //toerental berekenen plus rekening houding met het maximale toerental van de stappenmotor
     if (toerental_tilt > toerental_max) {
-        toerental_tilt = toerental_max;
-    }
+        toerental_tilt = toerental_max;    }
 
     //motortilt.setRPM(toerental_tilt);
 
@@ -206,26 +205,16 @@ void loop() {
     tilt_steps = round(tilt_hoek_nieuw / step_angle);
 
 
-    //aansturing stepper tilt
-    //TESTJE 
-
-    motortilt.runToNewPosition(tilt_steps*microsteps);
-
-    //motortilt.Startmove(tilt_steps);
-    //Serial.println(motortilt.getStepsRemaining());
-    //Serial.println(motortilt.getStepsRemaining());
-   
-    /*
-    while (motortilt.getStepsRemaining() > 0) {
-        motortilt.move(tilt_steps);
-        Serial.println("kanker");
-    }
-    */
-
-
-   
-    //rotate
+    //tilt steps toevoegen aan positions array
+    positions[0]=tilt_steps;
     
+
+
+
+
+
+    //rotate
+
 
     //toerental bereken en rekening houden met het maximale toerental van de motor
     if (toerental_rotate > toerental_max) {
@@ -238,13 +227,20 @@ void loop() {
     rotate_hoek_nieuw = rotate_hoek * microsteps;
     rotate_steps = round(rotate_hoek_nieuw / step_angle);
 
-    //aansturing stepper rotate
-    //Testje
-    motorrotate.runToNewPosition(rotate_steps*microsteps);
-    //motorrotate.move(rotate_steps);
+    //rotate steps toevoegen aan positie array
+    positions[1]=rotate_steps;
+
+    //multistepper aansturen
+    //beide stappenmotoren bewegen naar de opgeven posities, tot dat gebeurd is gaat het programma niet verder
+    stappen_motoren.moveTo(positions);
+    stappen_motoren.runSpeedToPosition();
+    //Serial.println(positions[0]);
+    //Serial.println(positions[1]);
+
 
 
     //doorgeven tilt_hoek, rotate_hoek, tilt_toerental_org, rotate_hoek_org naar RPI
     replyToPC();
+    
 
 }
